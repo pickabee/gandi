@@ -1,0 +1,42 @@
+= Gandi - Ruby library for using the Gandi XML-RPC API
+
+This is a ruby library for using the Gandi XML-RPC API, version 2.0. See the "gandirb" gem for using the Gandi API version 1. 
+At the moment support is planned for the Domain, Contact and Operation APIs only, but Hosting and Catalog APIs support may be added in the future.
+
+== HOWTO
+
+See http://rpc.ote.gandi.net/doc/2.0/index.html for the full documentation about the API.
+Note the apikey doesn't have to be explicitly provided when calling a method.
+
+Quick example:
+        require 'gandi'
+        Gandi.apikey = 'my 24-character API key'
+        Gandi.url # => "https://rpc.ote.gandi.net/xmlrpc/"
+        Gandi.url = Gandi::URL #Use the production URL instead of the default Operational Test and Evaluation URL
+        Gandi.call('version.info') #You do not have to provide the apikey for each call
+
+Detailed RDoc documentation for each method is available using rake rdoc.
+
+== Use in testing
+
+While using the OT&E system is safe as it will not result in any real billing, integration and unit test for your application should be repeatable and isolated.
+You can use mocking (and stubbing) to avoid calling the XML-RPC methods on the Gandi server and cover all the possible cases.
+
+Example using rspec-mocks:
+        connection_mock = double()
+        connection_mock.should_receive(:call).with('version.info').and_return({"api_version"=>"2.0"})
+        Gandi.connection = connection_mock
+        Gandi.call('version.info') # => {"api_version"=>"2.0"}
+
+Be aware setting the apikey or url will reset the connection variable (so you will have to set up your mock again).
+
+== TODO
+
+* More tests using rspec
+* Use a Session or Connexion class
+* Add all the domain, contact and mail methods
+* Better handling of failures and server exceptions, and stricter params checking
+
+== Copyright
+
+Copyright (c) 2012 Pickabee. Released under the MIT licence, see LICENSE for details.
