@@ -1,6 +1,7 @@
 require 'gandi/version'
 require 'gandi/errors'
 require 'gandi/connection'
+require 'gandi/contact'
 
 module Gandi
   URL = "https://rpc.gandi.net/xmlrpc/"

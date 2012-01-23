@@ -33,9 +33,10 @@ Be aware setting the apikey or url will reset the connection variable (so you wi
 == TODO
 
 * More tests using rspec
-* Use a Session or Connexion class
 * Add all the domain, contact and mail methods
-* Better handling of failures and server exceptions, and stricter params checking
+* Make the Domain/Contact/etc. classes more ActiveRecord-like
+* Contact: map contact types to strings
+* Better handling of failures and server exceptions, and overall stricter params checking
 
 == Copyright
 
