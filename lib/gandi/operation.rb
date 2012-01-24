@@ -2,6 +2,8 @@
 
 module Gandi
   class Operation
+    extend Gandi::Connector
+    
     attr_reader :id
     
     def initialize(operation_id, information_attributes = nil)
@@ -47,10 +49,6 @@ module Gandi
           end
         end
         operations
-      end
-      
-      def call(method, *arguments) #:nodoc:
-        Gandi.call(method, *arguments)
       end
     end
   end

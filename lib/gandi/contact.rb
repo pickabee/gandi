@@ -2,6 +2,8 @@
 
 module Gandi
   class Contact
+    extend Gandi::Connector
+    
     #Contact types mapping
     TYPES = {
       0 => 'person',
@@ -170,10 +172,6 @@ module Gandi
       def update(handle, contact)
         contact = call('contact.update', handle, contact)
         self.new(contact['handle'], contact)
-      end
-      
-      def call(method, *arguments) #:nodoc:
-        Gandi.call(method, *arguments)
       end
     end
     
