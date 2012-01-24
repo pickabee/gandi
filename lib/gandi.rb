@@ -4,6 +4,7 @@ require 'gandi/connection'
 require 'gandi/connector'
 require 'gandi/operation'
 require 'gandi/contact'
+require 'gandi/domain'
 
 module Gandi
   #Production URL
