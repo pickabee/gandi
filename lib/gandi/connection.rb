@@ -4,11 +4,15 @@ require 'openssl'
 module Gandi
   class Connection
     SSL_VERIFY_MODE = OpenSSL::SSL::VERIFY_NONE
-
-    attr_accessor :apikey
+    
+    #The 24-character API key used for authentication
+    attr_reader :apikey
+    
+    #URL used for connecting to the Gandi API
     attr_reader :url
     
     def initialize(apikey, url)
+      raise DataError, "You must set the apikey before calling any method" unless apikey
       @apikey = apikey
       @url = url
       connect
