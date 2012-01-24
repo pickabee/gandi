@@ -33,6 +33,17 @@ describe Gandi::Contact do
       end
     end
     
+    it "can modify its writable attributes" do
+      subject.city = "City 1"
+      subject.city.should == "City 1"
+      subject['city'] = "City 2"
+      subject.city.should == "City 2"
+    end
+    
+    it "cannot modify its id" do
+      lambda { subject['id'] = 'other id' }.should raise_error(Gandi::DataError)
+    end
+    
     it "should map its type to the corresponding string" do
       subject.type.should == 'person'
       subject.type = 'company'
@@ -66,6 +77,16 @@ describe Gandi::Contact do
     its(:to_s) { should == @handle }
     it { should be_persisted }
     
+    it "should map its attributes" do
+      [:orgname, :given, :family, :streetaddr, :city, :state, :zip, :country, :phone, :fax, :mobile, 
+      :tva_number, :siren, :marque, :lang, :newsletter, :obfuscated, :whois_obfuscated, :resell, :shippingaddress, 
+      :extra_parameters].each do |contact_attribute|
+        [subject.send(contact_attribute), subject[contact_attribute.to_s],subject.to_hash[contact_attribute.to_s]].each do |value|
+          value.should == @attributes[contact_attribute.to_s]
+        end
+      end
+    end
+    
     it "can test successful domain association" do
       domain_hash = {:domain => 'mydomain.com'}
       @connection_mock.should_receive(:call).with('contact.can_associate_domain', @handle, domain_hash).and_return(true)
@@ -78,6 +99,14 @@ describe Gandi::Contact do
     it "can fetch its contact informations" do
       @connection_mock.should_receive(:call).with('contact.info', @handle).and_return(@attributes)
       subject.info['city'].should == @attributes['city']
+    end
+    
+    it "cannot modify its id" do
+      lambda { subject['id'] = 'other id' }.should raise_error(Gandi::DataError)
+    end
+    
+    it "cannot modify its handle" do
+      lambda { subject['handle'] = 'NH0-GANDI' }.should raise_error(Gandi::DataError)
     end
     
     it "can be updated" do

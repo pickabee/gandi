@@ -95,12 +95,14 @@ module Gandi
       @attributes['type'] = TYPES.invert[type_string_or_id] || type_string_or_id
     end
     
+    #Returns a contact attribute value.
     def [](attribute)
       @attributes[attribute.to_s]
     end
     
+    #Sets a contact attribute value.
     def []=(attribute, value)
-      raise DataError, "Attribute #{attribute} is read-only" unless WRITABLE_ATTRIBUTES.include?(attribute.to_s)
+      raise DataError, "Attribute #{attribute} is read-only" unless WRITABLE_ATTRIBUTES.include?(attribute.to_sym)
       @attributes[attribute.to_s] = value
     end
     
@@ -127,6 +129,7 @@ module Gandi
     
     class << self
       #Should have a all optional contact dict then look if he is a person or a company and depending on that call create_person or create_company.
+      #Returns a contact object.
       #TODO filter params.
       def create(contact)
         contact = call('contact.create', contact)
@@ -162,6 +165,8 @@ module Gandi
       end
       
       #Check the same way as check and then update.
+      #Returns a contact object.
+      #TODO filter params.
       def update(handle, contact)
         contact = call('contact.update', handle, contact)
         self.new(contact['handle'], contact)
