@@ -5,10 +5,10 @@ module Gandi
   class Connection
     SSL_VERIFY_MODE = OpenSSL::SSL::VERIFY_NONE
     
-    #The 24-character API key used for authentication
+    #The 24-character API key used for authentication.
     attr_reader :apikey
     
-    #URL used for connecting to the Gandi API
+    #URL used for connecting to the Gandi API.
     attr_reader :url
     
     def initialize(apikey, url)
@@ -18,14 +18,14 @@ module Gandi
       connect
     end
 
-    #Calls a RPC method, transparently providing the apikey
+    #Calls a RPC method, automatically setting the apikey as the first argument.
     def call(method, *arguments)
       raw_call(method.to_s, @apikey, *arguments)
     end
     
     private
 
-    #Handles RPC calls and exceptions
+    #Handles RPC calls and exceptions.
     def raw_call(*args)
       begin
         @handler.call(*args)
@@ -46,7 +46,7 @@ module Gandi
       end
     end
     
-    #Instanciates the XMLRPC handler
+    #Instanciates the XMLRPC handler.
     def connect
       @handler = XMLRPC::Client.new_from_uri(@url)
       #Get rid of SSL warnings "peer certificate won't be verified in this SSL session"
