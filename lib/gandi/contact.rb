@@ -21,8 +21,8 @@ module Gandi
       6 => "In what year was your Gandi account created?"
     }
     
-    #Attributes returned when calling contact.info or creating/updating a contact
-    INFORMATION_ATTRIBUTES =  :type, :orgname, :given, :family, :streetaddr, :city, :state, :zip, :country, :phone, :fax, :mobile, 
+    #Settable contact attributes (ie. not the id or handle)
+    WRITABLE_ATTRIBUTES =  :type, :orgname, :given, :family, :streetaddr, :city, :state, :zip, :country, :phone, :fax, :mobile, 
                               :tva_number, :siren, :marque, :lang, :newsletter, :obfuscated, :whois_obfuscated, :resell, :shippingaddress, 
                               :extra_parameters
     
@@ -31,17 +31,21 @@ module Gandi
                                     :jo_announce_page, :jo_announce_number, :jo_declaration_date, :jo_publication_date,
                                     :security_question_num, :security_question_answer
     
-    attr_reader :handle, :id
-    attr_accessor :type, :orgname, :given, :family, :streetaddr, :city, :state, :zip, :country, :phone, :fax, :mobile, 
-                  :tva_number, :siren, :marque, :lang, :newsletter, :obfuscated, :whois_obfuscated, :resell, :shippingaddress, 
-                  :extra_parameters
+    #Attributes returned when calling contact.info or creating/updating a contact
+    INFORMATION_ATTRIBUTES = WRITABLE_ATTRIBUTES + [:id]
     
+    attr_reader :handle
+    
+    #A new instance of Contact.
+    #Takes a Gandi handle and/or a contact hash with string keys.
+    #When providing only a handle the contact info will be fetched from the API.
     def initialize(handle = nil, contact = nil)
       @handle = handle
-      set_info_attributes(contact) if (@handle || contact)
+      @attributes = {}
+      self.attributes=(contact) if (@handle || contact)
     end
     
-    #Test if a contact (defined by it’s handle) can create that domain.
+    #Test if a contact (defined by its handle) can create that domain.
     #Takes a domain hash.
     #TODO allow giving a string for the domain and converting it transparently, or a domain object.
     #FIXME is checking multiple domains at once possible ? (it may be according to the Gandi documentation).
@@ -63,20 +67,46 @@ module Gandi
     #FIXME What is check ? Typo for create ?
     def update(contact)
       raise DataError, "Cannot update a new contact, use Gandi::Contact.create instead" unless persisted?
-      set_info_attributes self.class.call('contact.update', @handle, contact)
+      self.attributes = self.class.call('contact.update', @handle, contact)
     end
     
-    #def type
-    #  TYPES[@type]
-    #end
-    #
-    #def type=(type_string_or_id)
-    #  @type = TYPES.invert[type_string_or_id] || type_string_or_id
-    #end
+    (WRITABLE_ATTRIBUTES - [:type]).each do |attr|
+      define_method(attr) do
+        @attributes[attr.to_s]
+      end
+      
+      define_method("#{attr}=") do |value|
+        @attributes[attr.to_s] = value
+      end
+    end
+    
+    #Returns the contact unique identifier.
+    def id
+      @attributes['id']
+    end
+    
+    #Returns the contact type string.
+    def type
+      TYPES[@attributes['type']]
+    end
+    
+    #Sets the contact type (provided with a type string or id).
+    def type=(type_string_or_id)
+      @attributes['type'] = TYPES.invert[type_string_or_id] || type_string_or_id
+    end
+    
+    def [](attribute)
+      @attributes[attribute.to_s]
+    end
+    
+    def []=(attribute, value)
+      raise DataError, "Attribute #{attribute} is read-only" unless WRITABLE_ATTRIBUTES.include?(attribute.to_s)
+      @attributes[attribute.to_s] = value
+    end
     
     #Returns a hash (with string keys) with the contact information attributes.
     def to_hash
-      INFORMATION_ATTRIBUTES.inject({}) {|h, attr|  h[attr.to_s] = send(attr); h }
+      @attributes.freeze
     end
     
     #Returns a string containing the handle of the contact.
@@ -87,7 +117,7 @@ module Gandi
     #Returns a string containing a human-readable representation of the contact.
     #TODO improve the output.
     def inspect
-      to_hash.to_s
+      to_hash.inspect
     end
     
     #Returns true if the contact exists on Gandi databases.
@@ -144,13 +174,11 @@ module Gandi
     
     private
     
-    def set_info_attributes(infos = nil)
-      infos ||= info
-      @id = infos['id']
-      INFORMATION_ATTRIBUTES.each do |attr|
-        send("#{attr}=", infos[attr.to_s])
-      end
-      return infos
+    def attributes=(contact = nil)
+      contact_attributes = contact || info
+      @attributes = contact_attributes.reject {|k,v| !INFORMATION_ATTRIBUTES.include?(k.to_sym) }
+      @attributes['handle'] = @handle || contact_attributes['handle']
+      return @attributes
     end
   end
 end

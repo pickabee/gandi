@@ -15,7 +15,7 @@ describe Gandi::Contact do
   end
   
   context "a new instance provided with contact infos" do
-    before { @contact_information_attributes = contact_information_attributes_hash('id' => 'new id') }
+    before { @contact_information_attributes = contact_information_attributes_hash('id' => 'new id', 'type' => 0) }
     subject { Gandi::Contact.new(nil, @contact_information_attributes) }
     
     its(:handle) { should be_nil }
@@ -24,8 +24,20 @@ describe Gandi::Contact do
     it { should_not be_persisted }
     
     it "should map its attributes" do
-      subject.city == @contact_information_attributes['city']
-      subject.to_hash['city'] == @contact_information_attributes['city']
+      [:orgname, :given, :family, :streetaddr, :city, :state, :zip, :country, :phone, :fax, :mobile, 
+      :tva_number, :siren, :marque, :lang, :newsletter, :obfuscated, :whois_obfuscated, :resell, :shippingaddress, 
+      :extra_parameters].each do |contact_attribute|
+        [subject.send(contact_attribute), subject[contact_attribute.to_s],subject.to_hash[contact_attribute.to_s]].each do |value|
+          value.should == @contact_information_attributes[contact_attribute.to_s]
+        end
+      end
+    end
+    
+    it "should map its type to the corresponding string" do
+      subject.type.should == 'person'
+      subject.type = 'company'
+      subject['type'].should == 1
+      subject.type.should == 'company'
     end
     
     it "cannot associate domains" do
