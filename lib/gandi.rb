@@ -1,6 +1,7 @@
 require 'gandi/version'
 require 'gandi/errors'
 require 'gandi/connection'
+require 'gandi/operation'
 require 'gandi/contact'
 
 module Gandi
