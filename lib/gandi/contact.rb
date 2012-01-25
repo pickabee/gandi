@@ -2,7 +2,7 @@
 
 module Gandi
   class Contact
-    extend Gandi::Connector
+    include Gandi::GandiObjectMethods
     
     #Contact types mapping
     TYPES = {
@@ -97,31 +97,15 @@ module Gandi
       @attributes['type'] = TYPES.invert[type_string_or_id] || type_string_or_id
     end
     
-    #Returns a contact attribute value.
-    def [](attribute)
-      @attributes[attribute.to_s]
-    end
-    
     #Sets a contact attribute value.
     def []=(attribute, value)
       raise DataError, "Attribute #{attribute} is read-only" unless WRITABLE_ATTRIBUTES.include?(attribute.to_sym)
       @attributes[attribute.to_s] = value
     end
     
-    #Returns a hash (with string keys) with the contact information attributes.
-    def to_hash
-      @attributes.freeze
-    end
-    
     #Returns a string containing the handle of the contact.
     def to_s
       @handle || ''
-    end
-    
-    #Returns a string containing a human-readable representation of the contact.
-    #TODO improve the output.
-    def inspect
-      to_hash.inspect
     end
     
     #Returns true if the contact exists on Gandi databases.

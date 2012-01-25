@@ -2,13 +2,13 @@
 
 module Gandi
   class Operation
-    extend Gandi::Connector
+    include Gandi::GandiObjectMethods
     
     attr_reader :id
     
     def initialize(operation_id, information_attributes = nil)
       @id = operation_id
-      @info = information_attributes || info
+      @attributes = information_attributes || info
     end
     
     #Return some attributes of a operation visible by this account.
@@ -19,18 +19,8 @@ module Gandi
     #Set the step of an operation to CANCEL.
     def cancel
       result = self.class.call('operation.cancel', @id)
-      @info['step'] = 'CANCEL' if result
+      @attributes['step'] = 'CANCEL' if result
       return result
-    end
-    
-    #Returns a hash (with string keys) with the operation information attributes.
-    def to_hash
-      @info
-    end
-    
-    #Returns an operation attribute value.
-    def [](attribute)
-      to_hash[attribute]
     end
     
     class << self
