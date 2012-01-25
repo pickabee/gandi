@@ -2,7 +2,6 @@ module Gandi
   class Domain
     module Contacts
       #Returns an hash of contacts, keys being the type of contact and values Gandi::Contact objects.
-      #TODO what is the 'id' of the contacts struct ?
       #TODO make the contact mapping optional.
       def contacts
         @attributes['contacts'].inject({}) { |h, contact| h[contact.first] = Gandi::Contact.new(contact.last['handle']); h }

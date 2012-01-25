@@ -6,7 +6,7 @@ At the moment support is planned for the Domain, Contact and Operation APIs only
 == HOWTO
 
 See http://rpc.ote.gandi.net/doc/2.0/index.html for the full documentation about the API.
-Note the apikey doesn't have to be explicitly provided when calling a method.
+Note that the apikey doesn't have to be explicitly provided when calling a method.
 
 Quick example:
         Gandi.apikey = 'my 24-character API key'
@@ -14,14 +14,14 @@ Quick example:
         Gandi.url = Gandi::URL #Use the production URL instead of the default Operational Test and Evaluation URL
         Gandi.call('version.info') #You do not have to provide the apikey for each call
 
-Detailed RDoc documentation for each method is available using rake rdoc.
+You can read more about the library in USAGE.rdoc
+Detailed RDoc documentation for each method is available using `rake rdoc`.
 
 == TODO
 
-* More tests using rspec
-* Add all the domain, contact and mail methods
+* More tests
+* forward, host and mailbox classes/methods
 * Make the Domain/Contact/etc. classes more ActiveRecord-like
-* Contact: map contact types to strings
 * Better handling of failures and server exceptions, and overall stricter params checking
 
 == Copyright

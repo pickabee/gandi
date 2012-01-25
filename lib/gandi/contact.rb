@@ -56,6 +56,8 @@ module Gandi
       return false unless persisted?
       self.class.call('contact.can_associate_domain', @handle, domain)
     end
+    
+    #TODO make this method return a boolean
     alias_method :can_associate_domain?, :can_associate_domain
     
     #Give all information on the given contact.
@@ -136,6 +138,8 @@ module Gandi
       def can_associate(contact, domain)
         call('contact.can_associate', contact, domain)
       end
+      
+      #TODO make this method return a boolean
       alias_method :can_associate?, :can_associate
       
       #List all contacts linked to the connected user (it will only return contacts when the apikey belong to a reseller).
