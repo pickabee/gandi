@@ -29,6 +29,39 @@ module DomainMacros
       #"fqdn"=>"domain.com",
     }.merge(ext_attrs)
   end
+  
+  def domain_creation_operation_hash(ext_attrs = {})
+    ext_attrs = {"type" => 'domain_create',
+      'id' => 0,
+      "session_id"=>0,
+      "eta"=>0,
+      'params' => {"domain"=>"fqdn", "bill"=>"FLN123-GANDI", "reseller"=>"FLN123-GANDI", "admin"=>"FLN123-GANDI", "pre_migration"=>true, "source_ip"=>"127.0.0.1", "ns"=>["gandi.net"], "duration"=>1, "source_client"=>"", "backend-version"=>3, "owner"=>"FLN123-GANDI", "tech"=>"FLN123-GANDI", "param_type"=>"domain", "auth_id"=>0},
+      "last_error" => "0",
+      'infos' => {"product_action"=>"create", "product_type"=>"domain", "product_name"=>".tld", "extras"=>{}, "label"=>"fqdn", "id"=>"", "quantity"=>""},
+      "step"=>"BILL"
+      }.merge(ext_attrs)
+    operation_information_attributes_hash(ext_attrs)
+  end
+  
+  def domain_renew_spec(ext_attrs = {})
+    {
+      'duration' => 1,
+      'current_year' => Date.today.year
+    }.merge(ext_attrs)
+  end
+  
+  def domain_renewal_operation_hash(ext_attrs = {})
+    ext_attrs = {"type" => 'domain_renew',
+      'id' => 0,
+      "session_id"=>0,
+      "eta"=>0,
+      'params' => {"domain"=>"fqdn", "bill"=>"FLN123-GANDI", "reseller"=>"FLN123-GANDI", "admin"=>"FLN123-GANDI", "pre_migration"=>true, "source_ip"=>"127.0.0.1", "ns"=>["gandi.net"], "duration"=>1, "source_client"=>"", "backend-version"=>3, "owner"=>"FLN123-GANDI", "tech"=>"FLN123-GANDI", "param_type"=>"domain", "auth_id"=>0},
+      "last_error" => "0",
+      'infos' => {"product_action"=>"renew", "product_type"=>"domain", "product_name"=>".tld", "extras"=>{}, "label"=>"fqdn", "id"=>"", "quantity"=>""},
+      "step"=>"BILL"
+      }.merge(ext_attrs)
+    operation_information_attributes_hash(ext_attrs)
+  end
 
   def domain_tld_regions
     {"generic"=>["aero", "biz", "com", "coop", "info", "mobi", "name", "net", "org", "pro", "tel", "travel"], "europe"=>["at", "be", "ch", "co.uk", "com.de", "de", "de.com", "es", "eu", "eu.com", "fr", "gb.com", "gb.net", "gr.com", "hu.com", "im", "it", "li", "lt", "lu", "me", "me.uk", "nl", "no", "no.com", "nu", "org.uk", "pl", "pt", "ru", "ru.com", "se", "se.com", "se.net", "uk.com", "uk.net"], "america"=>["ag", "ar.com", "br.com", "bz", "ca", "cc", "co", "gs", "gy", "hn", "ht", "la", "lc", "qc.com", "us", "us.com", "us.org", "uy.com", "vc"], "africa"=>["mu", "re", "sc", "za.com"], "asia"=>["ae.org", "af", "asia", "cn", "cn.com", "cx", "fm", "hk", "jp", "jpn.com", "ki", "kr.com", "mn", "nf", "sa.com", "sb", "tl", "tv", "tw", "ws"]}
