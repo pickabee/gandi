@@ -15,7 +15,7 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = "Gandirb"
   rdoc.main = 'README.rdoc'
-  rdoc.rdoc_files.include('README*', 'CHANGELOG', 'LICENSE')
+  rdoc.rdoc_files.include('README*', 'USAGE*', 'CHANGELOG', 'LICENSE')
   rdoc.rdoc_files.include('lib/**/*.rb')
   rdoc.options << '--line-numbers'
   rdoc.options << '--charset=UTF-8'

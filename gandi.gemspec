@@ -12,17 +12,17 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/pickabee/gandi"
   s.summary = %q{Ruby library for using the Gandi XML-RPC API}
   s.description = <<-EOL
-  This is a ruby library for using the Gandi XML-RPC API, version 2.0. 
+  A Ruby library for using the Gandi XML-RPC API, version 2.0. 
   At the moment support is planned for the Domain, Contact and Operation APIs only, but Hosting and Catalog APIs support may be added in the future.
   EOL
   s.rubyforge_project = "gandi"
 
   s.date = Date.today.strftime('%Y-%m-%d')
 
-  s.files = Dir["CHANGELOG", "LICENSE", "README.rdoc", "Gemfile", "Rakefile", "gandirb.gemspec", "{lib}/**/*.rb"]
+  s.files = Dir["CHANGELOG", "LICENSE", "README.rdoc", "USAGE.rdoc", "Gemfile", "Rakefile", "gandirb.gemspec", "{lib}/**/*.rb"]
   s.test_files = Dir["{spec}/**/*.rb"]
   s.rdoc_options = ["--line-numbers", "--charset=UTF-8", "--title", "Gandirb", "--main", "README.rdoc"]
-  s.extra_rdoc_files = %w[CHANGELOG LICENSE]
+  s.extra_rdoc_files = %w[USAGE.rdoc CHANGELOG LICENSE]
   s.require_paths = ["lib"]
 
   s.add_development_dependency 'rake'

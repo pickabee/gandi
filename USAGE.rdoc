@@ -1,0 +1,131 @@
+= Setup
+
+== Installation
+
+=== Using bundler
+
+Add the gandi gem requirement to your Gemfile :
+        gem "gandi", "~> 1.0"
+
+Then install the gem with `bundle`.
+
+=== Using Rubygems (or any other Ruby package manager)
+
+Install the gem manually (see your package manager documentation if you are using a Rubygems alternative) :
+        $ gem install gandi
+
+You will have to require the gandi library manually in your application code :
+        require 'gandi'
+
+=== Configuration
+
+Set your API key :
+        Gandi.apikey = 'my 24-character API key'
+See https://www.gandi.net/admin/apixml/ to activate the API for your account and get your apikey.
+
+By default, the library will use the OT&E system when calling the API. 
+See http://rpc.ote.gandi.net/doc/2.0/overview.html#ot-e-system to learn more about the OT&E system.
+You can use the production system by changing the URL :
+        Gandi.url = Gandi::URL
+
+= Description
+
+The Gandi library can be used in two ways : either by calling the API directly, or by using Ruby classes and methods that transparently map to the corresponding API calls.
+
+== API calls
+
+You can call any API method directly by using Gandi.call :
+        Gandi.call('version.info') # => {"api_version"=>"2.0"}
+
+The apikey will automatically be provided as the first argument of the called method.
+
+== Ruby objects
+
+The Gandi library aims to abstract the API calls by providing classes and methods matching Gandi "objects" :
+* Gandi::Contact - a Gandi contact (identified by its handle)
+* Gandi::Domain - a domain name (identified by its fqdn)
+* Gandi::Domain::Forward - A domain forward (identified by its source email) (TODO)
+* Gandi::Domain::Host - A domain host (TODO)
+* Gandi::Domain::Mailbox - a mailbox for a domain name (identified by its login) (TODO)
+* Gandi::Operation - an operation on the Gandi system (identified by its unique id)
+
+Be aware that Ruby classes do not specifically map to Gandi API namespaces.
+For example, Gandi::Domain#nameservers will return an array of nameservers fetched with a previous call to 'domain.info', while Gandi::Domain#nameservers=(nameservers) will call 'domain.nameservers.set'
+
+Here is a (partial) reference of Gandi namespaces and their matching Ruby classes and methods :
+* contact
+  * can_associate(contact, domain) => Gandi::Contact.can_associate(contact, domain)
+  *  can_associate_domain(handle, domain) => Gandi::Contact#can_associate_domain(domain)
+  *  create(contact) => Gandi::Contact.create(contact)
+  *  info(handle='') => Gandi::Contact#info,  Gandi::Contact.info(handle)
+  *  list(opts=nil) => Gandi::Contact.list(opts = {})
+  *  update(handle, contact) => Gandi::Contact#update(contact), Gandi::Contact.update(handle, contact)
+* domain
+  *  available(fqdns) => Gandi::Domain.available(fqdns)
+  *  count(filters=nil) => Gandi::Domain.count(filters = {})
+  *  create(fqdn, params) => Gandi::Domain.create(fqdn, params)
+  *  info(fqdn) => Gandi::Domain#info
+  *  list(opts=nil) => Gandi::Domain.list(opts = {})
+  *  renew(fqdn, params) => Gandi::Domain#renew(params)
+* domain.contacts
+  *  set(fqdn, contacts) => Gandi::Domain#contacts=(contacts)
+* domain.status
+  *  lock(fqdn) => Gandi::Domain#lock
+  *  unlock(fqdn) => Gandi::Domain#unlock
+* domain.host
+  *  count(fqdn[, opts=nil])
+  *  create(hostname, ips)
+  *  delete(hostname)
+  *  info(hostname)
+  *  list(fqdn[, opts=nil])
+  *  update(hostname, ips)
+* domain.mailbox
+  *  count(domain[, opts=nil])
+  *  create(domain, login, params)
+  *  delete(domain, login)
+  *  info(domain, login)
+  *  list(domain[, opts=nil])
+  *  purge(domain, login)
+  *  update(domain, login, params)
+* domain.mailbox.alias
+  *  set(domain, login, aliases)
+* domain.mailbox.responder
+  *  activate(domain, login, params)
+  *  deactivate(domain, login[, params=nil])
+* domain.forward
+  *  count(domain[, opts=nil])
+  *  create(domain, source, params
+  *  delete(domain, source)
+  *  list(domain[, opts=nil])
+  *  update(domain, source, params)
+* domain.packmail
+* domain.tld
+  *  list => Gandi::Domain::Tld.list
+  *  region => Gandi::Domain::Tld.region
+* domain.transferin
+  *  proceed(fqdn, params) => Gandi::Domain#transferin(params)
+* domain.nameservers
+  *  set(fqdn, nameservers) => Gandi::Domain#nameservers=(nameservers)
+* operation
+  *   cancel(apikey, operation) => Gandi::Operation#cancel
+  *   count(apikey[, opts=nil]) => Gandi::Operation.count(opts = {})
+  *   info(apikey, operation) => Gandi::Operation#info
+  *   list(apikey[, opts=nil]) => Gandi::Operation.list(opts = {})
+
+For more information on a Ruby class/method see the matching RDoc.
+
+Note that API calls under the hosting and catalog are not currently implemented. 
+No support is planned for thoses API calls (but pull requests are accepted).
+
+= Use in testing
+
+While using the OT&E system is safe as it will not result in any real billing, integration and unit tests for your application should be repeatable and isolated.
+You can use mocking (and/or stubbing) to avoid calling the XML-RPC methods on the Gandi server and cover all the possible cases.
+
+Example using rspec-mocks:
+        connection_mock = double()
+        connection_mock.should_receive(:call).with('version.info').and_return({"api_version"=>"2.0"})
+        Gandi.connection = connection_mock
+        Gandi.call('version.info') # => {"api_version"=>"2.0"}
+
+Be aware that changing the apikey or URL will reset the connection variable (so you will have to set up your mock again).
