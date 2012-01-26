@@ -5,6 +5,7 @@ require 'gandi/domain/contacts'
 require 'gandi/domain/status'
 require 'gandi/domain/transferin'
 require 'gandi/domain/nameservers'
+require 'gandi/domain/host'
 
 module Gandi
   class Domain

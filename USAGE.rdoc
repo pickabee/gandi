@@ -45,7 +45,7 @@ The Gandi library aims to abstract the API calls by providing classes and method
 * Gandi::Contact - a Gandi contact (identified by its handle)
 * Gandi::Domain - a domain name (identified by its fqdn)
 * Gandi::Domain::Forward - A domain forward (identified by its source email) (TODO)
-* Gandi::Domain::Host - A domain host (TODO)
+* Gandi::Domain::Host - A domain host (glue record) (identified by its hostname)
 * Gandi::Domain::Mailbox - a mailbox for a domain name (identified by its login) (TODO)
 * Gandi::Operation - an operation on the Gandi system (identified by its unique id)
 
