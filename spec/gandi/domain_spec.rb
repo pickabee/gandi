@@ -119,10 +119,50 @@ describe Gandi::Domain do
     
     pending "can set its contacts using a hash of contacts objects"
     
-    pending '#lock'
-    pending '#unlock'
-    pending '#transferin'
-    pending '#nameservers'
-    pending '#nameservers='
+    it 'can be locked' do
+      @connection_mock.should_receive(:call).with('domain.status.lock', fqdn).and_return(operation_information_attributes_hash('id' => 42))
+      
+      domain_lock_operation = subject.lock
+      domain_lock_operation.should be_a(Gandi::Operation)
+      domain_lock_operation.id.should == 42
+    end
+    
+    pending 'cannot be locked if already locked'
+    
+    it 'can be unlocked' do
+      @connection_mock.should_receive(:call).with('domain.status.unlock', fqdn).and_return(operation_information_attributes_hash('id' => 42))
+      
+      domain_lock_operation = subject.unlock
+      domain_lock_operation.should be_a(Gandi::Operation)
+      domain_lock_operation.id.should == 42
+    end
+    
+    pending 'cannot be unlocked if already unlocked'
+    
+    pending '#locked?'
+    
+    it 'can be transferred' do
+      handle = 'FLN123-GANDI'
+      params = {'owner' => handle, 'admin' => handle, 'bill' => handle, 'tech' => handle}
+      @connection_mock.should_receive(:call).with('domain.transferin.proceed', fqdn, params).and_return(operation_information_attributes_hash('id' => 42))
+      
+      domain_lock_operation = subject.transferin(params)
+      domain_lock_operation.should be_a(Gandi::Operation)
+      domain_lock_operation.id.should == 42
+    end
+    
+    it "has nameservers" do
+      subject.nameservers.should == domain_attributes['nameservers']
+    end
+    
+    it "can set its nameservers" do
+      new_nameservers = ['a.dns.gandi-ote.net', 'b.dns.gandi-ote.net', 'c.dns.gandi-ote.net']
+      @connection_mock.should_receive(:call).with('domain.nameservers.set', fqdn, new_nameservers).and_return(operation_information_attributes_hash('id' => 42))
+      
+      namservers_change = subject.nameservers=(new_nameservers)
+      #namservers_change.should be_a(Gandi::Operation)
+      #namservers_change.id.should == 42
+      namservers_change.should == new_nameservers
+    end
   end
 end
