@@ -63,6 +63,22 @@ describe Gandi::Domain do
     end
   end
   
+  describe '.transferin' do
+    let(:handle) { 'FLN123-GANDI' }
+    let(:transfer_params) { {'owner' => handle, 'admin' => handle, 'bill' => handle, 'tech' => handle} }
+    let(:fqdn) { 'domain1.com' }
+    
+    before do
+      @connection_mock.should_receive(:call).with('domain.transferin.proceed', fqdn, transfer_params).and_return(operation_information_attributes_hash('id' => 42))
+    end
+    
+    it "returns an operation object" do
+      domain_operation = Gandi::Domain.transferin(fqdn, transfer_params)
+      domain_operation.should be_a(Gandi::Operation)
+      domain_operation.id.should == 42
+    end
+  end
+  
   context "an instance" do
     let(:fqdn) { 'domain1.tld' }
     let(:domain_attributes) { domain_information_attributes_hash('fqdn' => fqdn) }
@@ -140,16 +156,6 @@ describe Gandi::Domain do
     pending 'cannot be unlocked if already unlocked'
     
     pending '#locked?'
-    
-    it 'can be transferred' do
-      handle = 'FLN123-GANDI'
-      params = {'owner' => handle, 'admin' => handle, 'bill' => handle, 'tech' => handle}
-      @connection_mock.should_receive(:call).with('domain.transferin.proceed', fqdn, params).and_return(operation_information_attributes_hash('id' => 42))
-      
-      domain_lock_operation = subject.transferin(params)
-      domain_lock_operation.should be_a(Gandi::Operation)
-      domain_lock_operation.id.should == 42
-    end
     
     it "has nameservers" do
       subject.nameservers.should == domain_attributes['nameservers']
