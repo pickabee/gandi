@@ -29,7 +29,7 @@ module Gandi
       end
       
       #Update a host.
-      #Returns a Gandi::Operation object.
+      #Return a Gandi::Operation object.
       def update(ips)
         operation_hash = self.class.call('domain.host.update', @hostname, ips)
         Gandi::Operation.new(operation_hash['id'], operation_hash)
@@ -44,14 +44,14 @@ module Gandi
         end
         
         #Count the glue records / hosts of a domain.
-        #TODO: accept a Domain object
+        #TODO: accept a Domain object.
         def count(fqdn, opts = {})
           call('domain.host.count', fqdn, opts)
         end
         
         #List the glue records / hosts for a given domain.
-        #Return an array of Host objects
-        #TODO: accept a Domain object
+        #Return an array of Host objects.
+        #TODO: accept a Domain object.
         def list(fqdn, opts = {})
           call('domain.host.list', fqdn, opts).map do |host|
             self.new(host['name'], host)

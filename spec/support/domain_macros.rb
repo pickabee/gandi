@@ -74,6 +74,23 @@ module DomainMacros
   def domain_host_attributes_hash(ext_attrs = {})
     {"ips"=>["1.2.3.4"], "name"=>"", 'domain' => ''}.merge(ext_attrs)
   end
+  
+  def mock_domain(fqdn, ext_attrs = {})
+    ext_attrs.merge!('fqdn' => fqdn)
+    old_connexion = Gandi.connection
+    new_connexion = double
+    new_connexion.should_receive(:call).with('domain.info', fqdn).and_return(domain_information_attributes_hash(ext_attrs))
+    Gandi.connection = new_connexion
+    
+    domain = Gandi::Domain.new(fqdn)
+    
+    Gandi.connection = old_connexion
+    return domain
+  end
+  
+  def domain_mailbox_attributes(ext_attrs = {})
+    {}.merge(ext_attrs)
+  end
 end
 
 RSpec.configure do |config|

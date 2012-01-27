@@ -6,6 +6,7 @@ require 'gandi/domain/status'
 require 'gandi/domain/transferin'
 require 'gandi/domain/nameservers'
 require 'gandi/domain/host'
+require 'gandi/domain/mailbox'
 
 module Gandi
   class Domain
@@ -45,7 +46,7 @@ module Gandi
       end
       
       #List operations done by this account.
-      #Note that domain.info will be called for each domain (as the info hash return by domain.list is missing some informations).
+      #Note that domain.info will be called for each domain (as the info hash returned by domain.list is missing some informations).
       #This may result in a lot of API calls if you have many registered domains for your contact, so using opts to restrict results is advised (or use a raw API call).
       def list(opts = {})
         call('domain.list', opts).map do |domain|
