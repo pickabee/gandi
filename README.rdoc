@@ -20,7 +20,6 @@ Detailed RDoc documentation for each method is available using `rake rdoc`.
 == TODO
 
 * More tests
-* forward, host and mailbox classes/methods
 * Make the Domain/Contact/etc. classes more ActiveRecord-like
 * Better handling of failures and server exceptions, and overall stricter params checking
 

@@ -109,9 +109,9 @@ describe Gandi::Domain::Mailbox do
       new_attrs = mailbox_attributes.merge('password' => 'newpassword')
       @connection_mock.should_receive(:call).with('domain.mailbox.update', fqdn, login, new_attrs).and_return(operation_information_attributes_hash('id' => 42))
       
-      host_deletion = subject.update(new_attrs)
-      host_deletion.should be_a(Gandi::Operation)
-      host_deletion.id.should == 42
+      mailbox_update = subject.update(new_attrs)
+      mailbox_update.should be_a(Gandi::Operation)
+      mailbox_update.id.should == 42
     end
   end
 end

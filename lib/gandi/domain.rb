@@ -7,6 +7,7 @@ require 'gandi/domain/transferin'
 require 'gandi/domain/nameservers'
 require 'gandi/domain/host'
 require 'gandi/domain/mailbox'
+require 'gandi/domain/forward'
 
 module Gandi
   class Domain

@@ -88,8 +88,13 @@ module DomainMacros
     return domain
   end
   
+  #FIXME: domain.mailbox.info is currently defunct in OT&E
   def domain_mailbox_attributes(ext_attrs = {})
     {}.merge(ext_attrs)
+  end
+  
+  def domain_forward_attributes(source, destinations = ['john.doe@domain.tld', 'jane.doe@domain2.tld'])
+    {'source' => source, 'destinations' => destinations}
   end
 end
 

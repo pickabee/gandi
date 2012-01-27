@@ -95,9 +95,9 @@ describe Gandi::Domain::Host do
       new_ips = ['5.6.7.8']
       @connection_mock.should_receive(:call).with('domain.host.update', hostname, new_ips).and_return(operation_information_attributes_hash('id' => 42))
       
-      host_deletion = subject.update(new_ips)
-      host_deletion.should be_a(Gandi::Operation)
-      host_deletion.id.should == 42
+      host_update = subject.update(new_ips)
+      host_update.should be_a(Gandi::Operation)
+      host_update.id.should == 42
     end
   end
 end
