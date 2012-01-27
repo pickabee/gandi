@@ -9,7 +9,7 @@ module ContactMacros
       "phone"=>"+33.400000000", 
       "password"=>"password", 
       "type"=>0, 
-      "email"=>"johndoe@pickabee.com"}.merge(ext_attrs)
+      "email"=>"johndoe@domain1.tld"}.merge(ext_attrs)
   end
 end
 

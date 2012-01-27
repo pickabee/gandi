@@ -1,7 +1,8 @@
 = Gandi - Ruby library for using the Gandi XML-RPC API
 
-A Ruby library for using the Gandi XML-RPC API, version 2.0. See the "gandirb" gem for using the Gandi API version 1. 
+A Ruby library for using the Gandi XML-RPC API.
 At the moment support is planned for the Domain, Contact and Operation APIs only, but Hosting and Catalog APIs support may be added in the future.
+Version 2.0.0 and upwards of this gem supports only the Gandi API version 2.0, use version 1.x of the gem if you need to the 1.0 API.
 
 == HOWTO
 
@@ -13,14 +14,19 @@ Quick example:
         Gandi.url # => "https://rpc.ote.gandi.net/xmlrpc/"
         Gandi.url = Gandi::URL #Use the production URL instead of the default Operational Test and Evaluation URL
         Gandi.call('version.info') #You do not have to provide the apikey for each call
+        contact = Gandi::Contact.new('FLN123-GANDI')
+        contact.country # => "FR"
 
-You can read more about the library in USAGE.rdoc
+You can read more about the library in USAGE.rdoc.
 Detailed RDoc documentation for each method is available using `rake rdoc`.
 
 == TODO
 
 * More tests
-* Make the Domain/Contact/etc. classes more ActiveRecord-like
+* Refactor the Operation object creation from the other classes
+* Add attributes getters to Domain/Operation/Mailbox/Host classes
+* Refactor the Contact class to match the other classes behaviour (instances of the class should only match existing records)
+* Make the Domain/Contact/etc. classes more ActiveModel-like
 * Better handling of failures and server exceptions, and overall stricter params checking
 
 == Copyright

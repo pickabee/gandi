@@ -1,3 +1,20 @@
-== 0.1
+== 2.0.0
 
-* Project/Gem creation
+* Full rewrite to support API version 2.0
+* Tests are now using rspec
+* Moved git repository to https://github.com/pickabee/gandi
+
+== 1.1.1
+
+* Missing gemfile in gem
+
+== 1.1.0
+
+* Fix method Domain#domain_web_redir_add
+* Add ruby 1.9 compatibility
+* Do not use the production URL when none is provided
+* Use bundler for testing and release tasks
+
+== 1.0
+
+* Gem creation

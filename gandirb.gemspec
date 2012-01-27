@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 require 'gandi/version'
 
 Gem::Specification.new do |s|
-  s.name = "gandi"
+  s.name = "gandirb"
   s.version = Gandi::VERSION
   s.platform = Gem::Platform::RUBY
 
@@ -12,10 +12,10 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/pickabee/gandi"
   s.summary = %q{Ruby library for using the Gandi XML-RPC API}
   s.description = <<-EOL
-  A Ruby library for using the Gandi XML-RPC API, version 2.0. 
+  A Ruby library for using the Gandi XML-RPC API.
   At the moment support is planned for the Domain, Contact and Operation APIs only, but Hosting and Catalog APIs support may be added in the future.
   EOL
-  s.rubyforge_project = "gandi"
+  s.rubyforge_project = "gandirb"
 
   s.date = Date.today.strftime('%Y-%m-%d')
 
