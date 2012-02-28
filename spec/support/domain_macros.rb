@@ -96,6 +96,29 @@ module DomainMacros
   def domain_forward_attributes(source, destinations = ['john.doe@domain.tld', 'jane.doe@domain2.tld'])
     {'source' => source, 'destinations' => destinations}
   end
+  
+  def domain_zone_list_attributes(ext_attrs = {})
+    year, month, day, hour, min, sec = 1970, 1, 1, 1, 1, 1
+    {
+      "date_updated"=> XMLRPC::DateTime.new(year, month, day, hour, min, sec), 
+      "version"=>1, 
+      "id"=>1, 
+      "name"=>"Gandi Zone"
+    }.merge(ext_attrs)
+  end
+  
+  def domain_zone_info_attributes(ext_attrs = {})
+    year, month, day, hour, min, sec = 1970, 1, 1, 1, 1, 1
+    {
+      "date_updated"=> XMLRPC::DateTime.new(year, month, day, hour, min, sec), 
+      "versions"=>[1],
+      "version"=>1,
+      "domains" => 0,
+      "id"=>1, 
+      "owner" => "BACKEND1-GANDI",
+      "name"=>"Gandi Zone"
+    }.merge(ext_attrs)
+  end
 end
 
 RSpec.configure do |config|

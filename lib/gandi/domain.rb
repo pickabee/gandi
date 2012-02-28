@@ -8,6 +8,7 @@ require 'gandi/domain/nameservers'
 require 'gandi/domain/host'
 require 'gandi/domain/mailbox'
 require 'gandi/domain/forward'
+require 'gandi/domain/zone'
 
 module Gandi
   class Domain
@@ -56,7 +57,7 @@ module Gandi
       end
       
       #Create a domain with the given information.
-      #Returns a Gandi::Domain object.
+      #Returns a Gandi::Operation object.
       def create(fqdn, params)
         operation_hash = call('domain.create', fqdn, params)
         Gandi::Operation.new(operation_hash['id'], operation_hash)
