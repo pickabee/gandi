@@ -119,6 +119,16 @@ module DomainMacros
       "name"=>"Gandi Zone"
     }.merge(ext_attrs)
   end
+  
+  def domain_zone_record_creation_attributes(ext_attrs = {})
+    {
+      "name"=>"@", "type"=>"A", "value"=>"127.0.0.1", "ttl"=>10800
+    }.merge(ext_attrs)
+  end
+  
+  def domain_zone_record_attributes(ext_attrs = {})
+    domain_zone_record_creation_attributes('id' => 1).merge(ext_attrs)
+  end
 end
 
 RSpec.configure do |config|

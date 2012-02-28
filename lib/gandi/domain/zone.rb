@@ -1,3 +1,6 @@
+require 'gandi/domain/zone/record'
+require 'gandi/domain/zone/version'
+
 module Gandi
   class Domain
     class Zone
@@ -11,7 +14,7 @@ module Gandi
       end
       
       #Clone a zone and its records from a given version.
-      #Return the created Zone.
+      #Return the created Gandi::Domain::Zone object.
       def clone(version_id = 0, params = {})
         self.class.new(self.class.clone(@id, version_id, params))
       end
@@ -31,7 +34,7 @@ module Gandi
       
       class << self
         #Create a zone.
-        #Returns a Gandi::Domain::Zone object.
+        #Return a Gandi::Domain::Zone object.
         def create(params)
           new(call('domain.zone.create', params))
         end
