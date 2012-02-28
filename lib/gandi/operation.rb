@@ -16,6 +16,14 @@ module Gandi
       self.class.call('operation.info', @id)
     end
     
+    ##TODO utility method to check if the operation has finished running
+    #def finished?
+    #end
+    
+    ##TODO use ActiveSupport::StringInquirer
+    #def step
+    #end
+    
     #Set the step of an operation to CANCEL.
     def cancel
       result = self.class.call('operation.cancel', @id)

@@ -22,12 +22,12 @@ Detailed RDoc documentation for each method is available using `rake rdoc`.
 
 == TODO
 
-* More tests
+* Add missing methods and classes (packmail, webredir...)
+* Abstract the multiple fetches (with the 'pending' states) for Domain.available
 * Refactor the Operation object creation from the other classes
-* Add attributes getters to Domain/Operation/Mailbox/Host classes
-* Refactor the Contact class to match the other classes behaviour (instances of the class should only match existing records)
-* Make the Domain/Contact/etc. classes more ActiveModel-like
+* Refactor the object classes to ensure consistent behaviour (starting with the Contact class) : use hashes with class method and object with instance methods
 * Better handling of failures and server exceptions, and overall stricter params checking
+* More tests
 
 == Copyright
 

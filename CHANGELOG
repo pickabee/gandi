@@ -1,7 +1,10 @@
+== 2.1.0
+
+* Zone classes and methods
+
 == 2.0.0
 
 * Full rewrite to support API version 2.0
-* Tests are now using rspec
 * Moved git repository to https://github.com/pickabee/gandi
 
 == 1.1.1
