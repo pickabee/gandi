@@ -1,6 +1,11 @@
 require 'xmlrpc/client'
 require 'openssl'
 
+XMLRPC::Config.module_eval { # avoid "RuntimeError: wrong/unknown XML-RPC type 'nil'" using Ruby 1.9
+  remove_const(:ENABLE_NIL_PARSER)
+  const_set(:ENABLE_NIL_PARSER, true)
+}
+
 module Gandi
   class Connection
     SSL_VERIFY_MODE = OpenSSL::SSL::VERIFY_NONE
