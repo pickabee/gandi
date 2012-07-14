@@ -1,3 +1,7 @@
+== 2.1.1
+
+* Set XMLRPC::Config::ENABLE_NIL_PARSER to avoid XML-RPC nil errors with Ruby 1.9.2. (Github issue #1)
+
 == 2.1.0
 
 * Zone classes and methods
